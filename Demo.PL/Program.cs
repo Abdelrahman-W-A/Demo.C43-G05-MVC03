@@ -1,3 +1,8 @@
+using Demo.BLL.Services;
+using Demo.DAL.Data.DbContex;
+using Demo.DAL.Data.Repostitories;
+using Microsoft.EntityFrameworkCore;
+
 namespace Demo.PL
 {
     public class Program
@@ -5,10 +10,18 @@ namespace Demo.PL
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            #region AddControllersWithViews
+            #region Services Container
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            //builder.Services.AddScoped<DepartmentRepostiory>();
+            builder.Services.AddScoped<IDepartmentRepostiory, DepartmentRepostiory>();
+            builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
             #endregion
 
             var app = builder.Build();
@@ -20,19 +33,14 @@ namespace Demo.PL
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
-            app.UseAuthorization();
 
             #region HTTP Request Pipeline
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
             #endregion
 
             app.Run();
