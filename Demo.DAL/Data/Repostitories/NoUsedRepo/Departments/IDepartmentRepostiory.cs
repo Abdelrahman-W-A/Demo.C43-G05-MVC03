@@ -1,5 +1,6 @@
-﻿
-namespace Demo.DAL.Data.Repostitories
+﻿using Demo.DAL.Models.DepartmentModel;
+
+namespace Demo.DAL.Data.Repostitories.NoUsedRepo.Departments
 {
     public interface IDepartmentRepostiory
     {

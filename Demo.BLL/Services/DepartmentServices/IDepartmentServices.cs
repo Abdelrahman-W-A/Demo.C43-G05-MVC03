@@ -1,7 +1,7 @@
 ﻿using Demo.BLL.Data_Transfer_Objects__DTO_;
 using Demo.BLL.Data_Transfer_Objects__DTOs_;
 
-namespace Demo.BLL.Services
+namespace Demo.BLL.Services.DepartmentServices
 {
     public interface IDepartmentServices
     {

@@ -7,10 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Demo.BLL.Data_Transfer_Objects__DTO_;
 using Demo.BLL.Data_Transfer_Objects__DTOs_;
-using Demo.BLL.Factories;
-using Demo.DAL.Data.Repostitories;
+using Demo.BLL.Factories.DepartmentsFactory;
+using Demo.DAL.Data.Repostitories.NoUsedRepo.Departments;
 using Demo.DAL.Models;
-namespace Demo.BLL.Services
+namespace Demo.BLL.Services.DepartmentServices
 {
     public class DepartmentServices(IDepartmentRepostiory _departmentRepostiory) : IDepartmentServices
     {

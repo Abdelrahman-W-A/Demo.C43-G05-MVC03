@@ -1,6 +1,6 @@
-using Demo.BLL.Services;
+using Demo.BLL.Services.DepartmentServices;
 using Demo.DAL.Data.DbContex;
-using Demo.DAL.Data.Repostitories;
+using Demo.DAL.Data.Repostitories.NoUsedRepo.Departments;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.PL

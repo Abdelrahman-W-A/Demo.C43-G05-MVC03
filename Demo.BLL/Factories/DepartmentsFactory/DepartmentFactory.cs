@@ -5,10 +5,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.BLL.Data_Transfer_Objects__DTOs_;
-using Demo.DAL.Models;
+using Demo.DAL.Models.DepartmentModel;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
-namespace Demo.BLL.Factories
+namespace Demo.BLL.Factories.DepartmentsFactory
 {
     static class DepartmentFactory
     {
