@@ -20,5 +20,9 @@ namespace Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs
         public DateOnly HiringDate { get; set; }
         public EmployeeGender gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+        public int CreatedBy { get; set; }
+        public int LastModifiedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime LastModifiedOn { get; set; }
     }
 }

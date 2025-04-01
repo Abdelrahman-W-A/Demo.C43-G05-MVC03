@@ -1,6 +1,11 @@
+using Demo.BLL.Profiles;
 using Demo.BLL.Services.DepartmentServices;
+using Demo.BLL.Services.EmployeeServices;
 using Demo.DAL.Data.DbContex;
+using Demo.DAL.Data.Repostitories.EntityTypes;
 using Demo.DAL.Data.Repostitories.NoUsedRepo.Departments;
+using Demo.DAL.Data.Repostitories.NoUsedRepo.Employees;
+using Demo.DAL.Models.EmployeeModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.PL
@@ -20,8 +25,12 @@ namespace Demo.PL
             });
 
             //builder.Services.AddScoped<DepartmentRepostiory>();
-            builder.Services.AddScoped<IDepartmentRepostiory, DepartmentRepostiory>();
             builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
+            builder.Services.AddScoped<IDepartmentRepostiory, DepartmentRepostiory>();
+            builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+            builder.Services.AddScoped<IEmployeeServices, EmployeeServices>();
+            builder.Services.AddScoped<IEntityTypeRepo<Employee>, EmployeeRepo>();
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
             #endregion
 
             var app = builder.Build();

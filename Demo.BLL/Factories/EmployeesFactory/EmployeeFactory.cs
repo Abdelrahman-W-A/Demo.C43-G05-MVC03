@@ -29,6 +29,7 @@ namespace Demo.BLL.Factories.EmployeesFactory
         {
             return new Employee()
             {
+                Id = employeeDTO.Id,
                 Name = employeeDTO.Name,
                 age = employeeDTO.Age,
                 IsActive = employeeDTO.IsActive,

@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Demo.BLL.Data_Transfer_Objects__DTO_;
 using Demo.BLL.Data_Transfer_Objects__DTOs_;
 using Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs;
+using Demo.BLL.Factories.EmployeesFactory;
 using Demo.DAL.Data.Repostitories.EntityTypes;
 using Demo.DAL.Models.EmployeeModel;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Demo.BLL.Services.EmployeeServices
 {
-    public class EmployeeServices(IEntityTypeRepo<Employee> _entity) : IEmployeeServices
+    public class EmployeeServices(IEntityTypeRepo<Employee> _entity , IMapper _mapper) : IEmployeeServices
     {
-        public int AddEmployee(GetEmployeeDTO createdEmployee)
+
+        public int AddEmployee(AddNewEmployeeDTO createdEmployee)
         {
-            var Emp = createdEmployee.ToEntity();
-            return _entity.Add(Emp);
+            var employee = _mapper.Map<AddNewEmployeeDTO , Employee>(createdEmployee);
+            return _entity.Add(employee);
         }
 
         public bool DeleteEmployee(int id)
@@ -26,9 +29,8 @@ namespace Demo.BLL.Services.EmployeeServices
             if (employee is null) return false;
             else
             {
-                int result = _entity.Remove(employee);
-                if (result > 0) return true;
-                else return false;
+                employee.IsDeleted = true;
+                return _entity.Update(employee) > 0 ? true : false;
             }
         }
 
@@ -36,17 +38,19 @@ namespace Demo.BLL.Services.EmployeeServices
         {
             var Emp = _entity.GetAll();
 
-            var EmpToReturn = Emp.Select(E => new GetEmployeeDTO()
-            {
-                Id = E.Id,
-                Name = E.Name,
-                Age = E.age,
-                IsActive = E.IsActive,
-                Salary = E.Salary,
-                Email = E.Email,
-                gender = E.Gender,
-                EmployeeType = E.EmployeeType
-            });
+            //var EmpToReturn = Emp.Select(E => new GetEmployeeDTO()
+            //{
+            //    Id = E.Id,
+            //    Name = E.Name,
+            //    Age = E.age,
+            //    IsActive = E.IsActive,
+            //    Salary = E.Salary,
+            //    Email = E.Email,
+            //    gender = E.Gender,
+            //    EmployeeType = E.EmployeeType
+            //});
+
+            var EmpToReturn = _mapper.Map<IEnumerable<Employee> , IEnumerable<GetEmployeeDTO>>(Emp);
 
             return EmpToReturn;
         }
@@ -58,20 +62,27 @@ namespace Demo.BLL.Services.EmployeeServices
             if (employee is null) return null;
             else
             {
-                var ReturnEmployee = new GetEmployeeByIdDTO()
-                {
-                    Id = employee.Id,
-                    Name = employee.Name,
-                    Age = employee.age,
-                    Address = employee.Address,
-                    IsActive = employee.IsActive,
-                    Salary = employee.Salary,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    HiringDate = DateOnly.FromDateTime(employee.HiringDate),
-                    gender = employee.Gender,
-                    EmployeeType = employee.EmployeeType
-                };
+                //var ReturnEmployee = new GetEmployeeByIdDTO()
+                //{
+                //    Id = employee.Id,
+                //    Name = employee.Name,
+                //    Age = employee.age,
+                //    Address = employee.Address,
+                //    IsActive = employee.IsActive,
+                //    Salary = employee.Salary,
+                //    Email = employee.Email,
+                //    PhoneNumber = employee.PhoneNumber,
+                //    HiringDate = DateOnly.FromDateTime(employee.HiringDate),
+                //    gender = employee.Gender,
+                //    EmployeeType = employee.EmployeeType,
+                //    CreatedBy = 1,
+                //    CreatedOn = DateTime.Now,
+                //    LastModifiedBy = 1,
+                //    LastModifiedOn = DateTime.Now
+
+                //};
+
+                var ReturnEmployee = _mapper.Map<Employee, GetEmployeeByIdDTO>(employee);
 
                 return ReturnEmployee;
             }
@@ -79,7 +90,7 @@ namespace Demo.BLL.Services.EmployeeServices
 
         public int UpdateEmployee(UpdatedmployeeDTO updatedEmployee)
         {
-            return _entity.Update(updatedEmployee.ToEntity());
+            return _entity.Update(_mapper.Map<UpdatedmployeeDTO , Employee>(updatedEmployee));
         }
     }
 }
