@@ -52,7 +52,11 @@ namespace Demo.PL
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             #endregion
 
+
+
+            #region RUN
             app.Run();
+            #endregion
         }
     }
 }
