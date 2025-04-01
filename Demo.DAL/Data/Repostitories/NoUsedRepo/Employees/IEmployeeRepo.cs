@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DAL.Data.Repostitories.NoUsedRepo.Employees
 {
-    internal interface IEmployeeRepo
+    public interface IEmployeeRepo
     {
 
     }

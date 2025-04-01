@@ -20,9 +20,9 @@ namespace Demo.DAL.Data.Repostitories.EntityTypes
         public IEnumerable<T> GetAll(bool WithTracking = false) // Get all Departments
         {
             if (WithTracking)
-                return _dbContext.Set<T>().ToList();
+                return _dbContext.Set<T>().Where(E=>E.IsDeleted != true).ToList();
             else
-                return _dbContext.Set<T>().AsNoTracking().ToList();
+                return _dbContext.Set<T>().Where(E => E.IsDeleted != true).AsNoTracking().ToList();
         }
 
         public int Add(T department) // Add Department
