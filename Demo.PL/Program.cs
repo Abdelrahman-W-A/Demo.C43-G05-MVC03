@@ -1,4 +1,5 @@
 using Demo.BLL.Profiles;
+using Demo.BLL.Services.Attachment_Services;
 using Demo.BLL.Services.DepartmentServices;
 using Demo.BLL.Services.EmployeeServices;
 using Demo.DAL.Data.DbContex;
@@ -6,6 +7,8 @@ using Demo.DAL.Data.Repostitories.EntityTypes;
 using Demo.DAL.Data.Repostitories.NoUsedRepo.Departments;
 using Demo.DAL.Data.Repostitories.NoUsedRepo.Employees;
 using Demo.DAL.Models.EmployeeModel;
+using Demo.DAL.Models.IDentityModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.PL
@@ -32,6 +35,10 @@ namespace Demo.PL
             builder.Services.AddScoped<IEmployeeServices, EmployeeServices>();
             builder.Services.AddScoped<IEntityTypeRepo<Employee>, EmployeeRepo>();
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
+            builder.Services.AddScoped<IAttachmentServices, AttachmentServices>();
+            builder.Services.AddIdentity<Application_User, IdentityRole>()
+                            .AddEntityFrameworkStores<ApplicationDbContext>();
+
             #endregion
 
             var app = builder.Build();
@@ -50,7 +57,7 @@ namespace Demo.PL
             #region HTTP Request Pipeline
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
             #endregion
 
 

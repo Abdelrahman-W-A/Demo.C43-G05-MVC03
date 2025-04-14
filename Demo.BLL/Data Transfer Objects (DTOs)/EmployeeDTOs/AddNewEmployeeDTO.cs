@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.DAL.Models.Shared;
+using Microsoft.AspNetCore.Http;
 
 namespace Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs
 {
@@ -25,5 +26,6 @@ namespace Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs
         public int LastModifiedBy { get; set; }
         [Display(Name = "Department")]
         public int? DepartmentID { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

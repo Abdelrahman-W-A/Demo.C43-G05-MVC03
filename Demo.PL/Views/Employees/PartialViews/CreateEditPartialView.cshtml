@@ -7,8 +7,12 @@
     var departments = departmentService.GetAllDepartments() ?? new List<DepartmentDTO>();
     var Departments = new SelectList(departments, "DeptID", nameof(DepartmentDTO.Name));
 }
-
-
+ 
+<div class="form-group mb-3 col-6">
+    <label class="form-label" asp-for="Image"></label>
+    <input asp-for="Image" type="file" class="form-control" />
+    <span asp-validation-for="Image" class="text-danger"></span>
+</div>
 <div class="form-group mb-3 col-6">
     <label class="form-label" asp-for="Name"></label>
     <input asp-for="Name" class="form-control" />
@@ -48,8 +52,6 @@
     <select class="form-control" asp-for="EmployeeType" asp-items="Html.GetEnumSelectList<EmployeeType>()"><option value="">Select Employee Type</option></select>
     <span asp-validation-for="EmployeeType" class="text-danger"></span>
 </div>
-
-
 <div class="form-group mb-3 col-6">
     <label class="form-label" asp-for="DepartmentID"></label>
     <select class="form-control" asp-for="DepartmentID" asp-items="Departments">
@@ -57,8 +59,6 @@
     </select>
     <span asp-validation-for="DepartmentID" class="text-danger"></span>
 </div>
-
-
 <div class="form-group mb-3 col-6">
     <label class="form-label" asp-for="gender"></label>
     <div>

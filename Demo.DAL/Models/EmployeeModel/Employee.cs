@@ -24,5 +24,6 @@ namespace Demo.DAL.Models.EmployeeModel
 
         public int? DepartmentID { get; set; }
         public virtual Department? Department { get; set; }
+        public string? ImageName { get; set; }
     }
 }

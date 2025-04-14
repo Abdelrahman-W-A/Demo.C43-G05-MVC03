@@ -8,18 +8,23 @@ using Demo.BLL.Data_Transfer_Objects__DTO_;
 using Demo.BLL.Data_Transfer_Objects__DTOs_;
 using Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs;
 using Demo.BLL.Factories.EmployeesFactory;
+using Demo.BLL.Services.Attachment_Services;
 using Demo.DAL.Data.Repostitories.EntityTypes;
 using Demo.DAL.Models.EmployeeModel;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Demo.BLL.Services.EmployeeServices
 {
-    public class EmployeeServices(IEntityTypeRepo<Employee> _entity , IMapper _mapper) : IEmployeeServices
+    public class EmployeeServices(IEntityTypeRepo<Employee> _entity , IMapper _mapper , IAttachmentServices _attachmentServices) : IEmployeeServices
     {
 
         public int AddEmployee(AddNewEmployeeDTO createdEmployee)
         {
             var employee = _mapper.Map<Employee> (createdEmployee);
+            if (createdEmployee.Image is not null)
+            {
+                _attachmentServices.Upload(createdEmployee.Image, "Images");
+            }
             return _entity.Add(employee);
         }
 

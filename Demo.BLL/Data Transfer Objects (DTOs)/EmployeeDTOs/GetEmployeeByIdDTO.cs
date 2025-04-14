@@ -26,5 +26,6 @@ namespace Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs
         public DateTime LastModifiedOn { get; set; }
         public int? DepartmentID { get; set; }
         public string? Department { get; set; }
+        public string? Image { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace Demo.PL.ViewModels
         public EmployeeType EmployeeType { get; set; }
         public int CreatedBy { get; set; }
         public int LastModifiedBy { get; set; }
-        public int? DepartmentID { get; set; } 
+        public int? DepartmentID { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

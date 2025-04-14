@@ -47,7 +47,8 @@ namespace Demo.PL.Controllers
                         EmployeeType = employeeDTO.EmployeeType,
                         Age = employeeDTO.Age,
                         gender = employeeDTO.gender,
-                        DepartmentID = employeeDTO.DepartmentID
+                        DepartmentID = employeeDTO.DepartmentID,
+                        Image = employeeDTO.Image
                     };
                     int result = _employeeServices.AddEmployee(employee);
                     if (result > 0)
