@@ -35,11 +35,12 @@ namespace Demo.PL.Controllers
                 try
                 {
                     int result = _departmentServices.AddDepartment(createdDepartment);
+                    string Message;
                     if (result > 0)
-                        return RedirectToAction(nameof(Index));
+                        Message = $"Department {createdDepartment.Name} Is Created successfully";
                     else
                     {
-                        return View();
+                        Message = $"Department {createdDepartment.Name} Can Not Be Created";
                     }
                 }
                 catch (Exception EX)

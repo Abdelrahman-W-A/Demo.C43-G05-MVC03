@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.DAL.Data.DbContex;
@@ -43,5 +44,9 @@ namespace Demo.DAL.Data.Repostitories.EntityTypes
             return _dbContext.SaveChanges();
         }
 
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate)
+        {
+            return _dbContext.Set<T>().Where(predicate).ToList();
+        }
     }
 }

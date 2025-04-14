@@ -43,5 +43,21 @@ namespace Demo.BLL.Factories.EmployeesFactory
                 ModifiedBy = employeeDTO.LastModifiedBy
             };
         }
+
+        public static Employee ToEntity(this AddNewEmployeeDTO employeeDTO)
+        {
+            return new Employee()
+            {
+                Name = employeeDTO.Name,
+                Email = employeeDTO.Email,
+                PhoneNumber = employeeDTO.PhoneNumber,
+                age = employeeDTO.Age,
+                HiringDate = employeeDTO.HiringDate.ToDateTime(new TimeOnly()),
+                Salary = employeeDTO.Salary,
+                EmployeeType = employeeDTO.EmployeeType,
+                IsActive = employeeDTO.IsActive,
+                Gender = employeeDTO.gender
+            };
+        }
     }
 }

@@ -22,5 +22,6 @@ namespace Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs
         public EmployeeType EmployeeType { get; set; }
         public int CreatedBy { get; set; }
         public int LastModifiedBy { get; set; }
+        public int? DepartmentID { get; set; }
     }
 }
