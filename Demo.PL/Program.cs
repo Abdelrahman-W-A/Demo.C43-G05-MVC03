@@ -2,10 +2,14 @@ using Demo.BLL.Profiles;
 using Demo.BLL.Services.Attachment_Services;
 using Demo.BLL.Services.DepartmentServices;
 using Demo.BLL.Services.EmployeeServices;
+using Demo.BLL.Services.Model_Services.RolesServices;
+using Demo.BLL.Services.Model_Services.UserServices;
 using Demo.DAL.Data.DbContex;
 using Demo.DAL.Data.Repostitories.EntityTypes;
 using Demo.DAL.Data.Repostitories.NoUsedRepo.Departments;
 using Demo.DAL.Data.Repostitories.NoUsedRepo.Employees;
+using Demo.DAL.Data.Repostitories.NoUsedRepo.Roles;
+using Demo.DAL.Data.Repostitories.NoUsedRepo.Users;
 using Demo.DAL.Models.EmployeeModel;
 using Demo.DAL.Models.IDentityModel;
 using Microsoft.AspNetCore.Identity;
@@ -34,10 +38,18 @@ namespace Demo.PL
             builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
             builder.Services.AddScoped<IEmployeeServices, EmployeeServices>();
             builder.Services.AddScoped<IEntityTypeRepo<Employee>, EmployeeRepo>();
+            builder.Services.AddScoped<IUserRepo, UsersRepo>();
+            builder.Services.AddScoped<IUsersServices, UsersServices>();
+            builder.Services.AddScoped<IRolesServices, RoleService>();
+            builder.Services.AddScoped<IRolesRepo, RolesRepo>();
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
             builder.Services.AddScoped<IAttachmentServices, AttachmentServices>();
-            builder.Services.AddIdentity<Application_User, IdentityRole>()
-                            .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddIdentity<Application_User, IdentityRole>(Options =>
+            {
+                Options.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+              .AddDefaultTokenProviders();
+
 
             #endregion
 
@@ -57,7 +69,7 @@ namespace Demo.PL
             #region HTTP Request Pipeline
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Account}/{action=Register}/{id?}");
+                pattern: "{controller=Account}/{action=Login}/{id?}");
             #endregion
 
 
@@ -66,5 +78,6 @@ namespace Demo.PL
             app.Run();
             #endregion
         }
+
     }
 }

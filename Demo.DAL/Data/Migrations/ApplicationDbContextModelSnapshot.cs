@@ -65,7 +65,7 @@ namespace Demo.DAL.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("Demo.DAL.Models.EmployeeModel.Employee", b =>
@@ -140,7 +140,7 @@ namespace Demo.DAL.Data.Migrations
 
                     b.HasIndex("DepartmentID");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("Demo.DAL.Models.IDentityModel.Application_User", b =>

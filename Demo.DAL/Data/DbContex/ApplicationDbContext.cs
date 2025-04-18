@@ -20,9 +20,9 @@ namespace Demo.DAL.Data.DbContex
 
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+                  // Value for the base type
             modelBuilder.ApplyConfigurationsFromAssembly(System.Reflection.Assembly.GetExecutingAssembly()); // Get assembly
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly); // Another way to get assembly
             base.OnModelCreating(modelBuilder);

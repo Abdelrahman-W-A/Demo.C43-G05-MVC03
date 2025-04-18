@@ -1,7 +1,9 @@
-﻿@model RegisterViewModel
+﻿@using Demo.Presentation.Models
+
+@model RegisterViewModel
 @{
     ViewData["Title"] = "Register";
-    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    Layout = @"..\Shared\_AuthLayout.cshtml";
 }
 
 <div class="main-agileinfo">
@@ -36,11 +38,7 @@
             </div>
             <input type="submit" value="SIGNUP">
         </form>
-        <p>Don you have an Account? <a asp-action="Login"> Login Now!</a></p>
+        <p>Don you have an Account? <a asp-controller ="Account" asp-action="Login"> Login Now!</a></p>
     </div>
 </div>
 
-@section Validation {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}

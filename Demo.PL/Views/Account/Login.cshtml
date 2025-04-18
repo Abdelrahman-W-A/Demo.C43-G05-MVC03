@@ -1,7 +1,8 @@
-﻿@model LoginViewModel
+﻿@using Demo.Presentation.Models
+@model LoginViewModel
 @{
     ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    Layout = @"..\Shared\_AuthLayout.cshtml";
 }
 
 <div class="main-agileinfo">
@@ -26,10 +27,7 @@
             <input type="submit" value="SIGNIN">
         </form>
         <p>Don't have an Account? <a asp-action="Register"> Register Now!</a></p>
+		<p><a asp-action="ForgetPassword"> Forget Password!</a></p>
     </div>
 </div>
 
-@section Validation {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}

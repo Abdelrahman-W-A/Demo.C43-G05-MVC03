@@ -78,7 +78,7 @@ namespace Demo.PL.Controllers
 
         #region Details
         [HttpGet]
-        public ActionResult Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (!id.HasValue) return BadRequest();
             var employee = _employeeServices.GetEmployeeById(id.Value);

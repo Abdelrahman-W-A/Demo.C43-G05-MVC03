@@ -7,11 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Demo.DAL.Models.IDentityModel
 {
-    public class Application_User : IdentityUser
+    public class Roles : Application_User
     {
-        public string FirstName { get; set; } = null!;
-        public string? LastName { get; set; }
-
-        public string? RoleName = "User";
     }
 }
