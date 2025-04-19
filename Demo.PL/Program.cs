@@ -12,6 +12,9 @@ using Demo.DAL.Data.Repostitories.NoUsedRepo.Roles;
 using Demo.DAL.Data.Repostitories.NoUsedRepo.Users;
 using Demo.DAL.Models.EmployeeModel;
 using Demo.DAL.Models.IDentityModel;
+using Demo.PL.Helpers;
+using Demo.PL.Settings;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,6 +45,17 @@ namespace Demo.PL
             builder.Services.AddScoped<IUsersServices, UsersServices>();
             builder.Services.AddScoped<IRolesServices, RoleService>();
             builder.Services.AddScoped<IRolesRepo, RolesRepo>();
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            }).AddGoogle(options =>
+            {
+                IConfiguration configuration = builder.Configuration.GetSection("Authentication:Google");
+                options.ClientId = configuration["ClientId"];
+                options.ClientSecret = configuration["ClientSecret"];
+            });
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
             builder.Services.AddScoped<IAttachmentServices, AttachmentServices>();
             builder.Services.AddIdentity<Application_User, IdentityRole>(Options =>
@@ -51,6 +65,7 @@ namespace Demo.PL
               .AddDefaultTokenProviders();
 
 
+            builder.Services.AddTransient<IMailService, MailService>();
             #endregion
 
             var app = builder.Build();

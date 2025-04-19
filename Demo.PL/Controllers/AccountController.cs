@@ -3,13 +3,15 @@ using Demo.PL.Utilities;
 using Demo.PL.ViewModels;
 using Demo.PL.Views.Account;
 using Demo.Presentation.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Demo.PL.Controllers
 {
-    public class AccountController(UserManager<Application_User> _userManager) : Controller
+    public class AccountController(UserManager<Application_User> _userManager , SignInManager<Application_User> signInManager) : Controller
     {
 
         #region Register
@@ -77,6 +79,28 @@ namespace Demo.PL.Controllers
             // Handle login failure
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(viewModel);
+        }
+
+        public IActionResult LoginWithGoogle()
+        {
+            var prop = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleResponse"),
+            };
+            return Challenge(prop,GoogleDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+            var claim = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new 
+            {
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+            });
+            return RedirectToAction("Index", "Home");
         }
         #endregion
 
@@ -174,6 +198,17 @@ namespace Demo.PL.Controllers
             }
                 return View( nameof(ResetPassword), resetPasswordViewModel);
         }
-            #endregion
+        #endregion
+
+        #region SignOut
+
+        [HttpGet]
+        public new IActionResult SignOut()
+        {
+            signInManager.SignOutAsync().GetAwaiter().GetResult();
+            return RedirectToAction(nameof(Login));
+        }   
+
+        #endregion
     }
 }
