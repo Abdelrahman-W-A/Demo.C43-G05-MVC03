@@ -13,7 +13,7 @@ namespace Demo.BLL.Services.EmployeeServices
     {
         int AddEmployee(AddNewEmployeeDTO createdEmployee);
         bool DeleteEmployee(int id);
-        IEnumerable<GetEmployeeDTO> GetAllEmployees();
+        IEnumerable<GetEmployeeDTO> GetAllEmployees(string? Name);
         GetEmployeeByIdDTO? GetEmployeeById(int id);
         int UpdateEmployee(UpdatedmployeeDTO updatedEmployee);
     }

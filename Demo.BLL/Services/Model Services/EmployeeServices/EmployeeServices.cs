@@ -8,18 +8,23 @@ using Demo.BLL.Data_Transfer_Objects__DTO_;
 using Demo.BLL.Data_Transfer_Objects__DTOs_;
 using Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs;
 using Demo.BLL.Factories.EmployeesFactory;
+using Demo.BLL.Services.Attachment_Services;
 using Demo.DAL.Data.Repostitories.EntityTypes;
 using Demo.DAL.Models.EmployeeModel;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Demo.BLL.Services.EmployeeServices
 {
-    public class EmployeeServices(IEntityTypeRepo<Employee> _entity , IMapper _mapper) : IEmployeeServices
+    public class EmployeeServices(IEntityTypeRepo<Employee> _entity , IMapper _mapper , IAttachmentServices _attachmentServices) : IEmployeeServices
     {
 
         public int AddEmployee(AddNewEmployeeDTO createdEmployee)
         {
-            var employee = _mapper.Map<AddNewEmployeeDTO , Employee>(createdEmployee);
+            var employee = _mapper.Map<Employee> (createdEmployee);
+            if (createdEmployee.Image is not null)
+            {
+                _attachmentServices.Upload(createdEmployee.Image, "Images");
+            }
             return _entity.Add(employee);
         }
 
@@ -34,24 +39,38 @@ namespace Demo.BLL.Services.EmployeeServices
             }
         }
 
-        public IEnumerable<GetEmployeeDTO> GetAllEmployees()
+        public IEnumerable<GetEmployeeDTO> GetAllEmployees(string? name)
         {
-            var Emp = _entity.GetAll();
+            //var Emp = _entity.GetAll(E => E.Name.ToLower().Contains(name.ToLower()));
 
-            //var EmpToReturn = Emp.Select(E => new GetEmployeeDTO()
-            //{
-            //    Id = E.Id,
-            //    Name = E.Name,
-            //    Age = E.age,
-            //    IsActive = E.IsActive,
-            //    Salary = E.Salary,
-            //    Email = E.Email,
-            //    gender = E.Gender,
-            //    EmployeeType = E.EmployeeType
-            //});
 
-            var EmpToReturn = _mapper.Map<IEnumerable<Employee> , IEnumerable<GetEmployeeDTO>>(Emp);
 
+            ////var EmpToReturn = Emp.Select(E => new GetEmployeeDTO()
+            ////{
+            ////    Id = E.Id,
+            ////    Name = E.Name,
+            ////    Age = E.age,
+            ////    IsActive = E.IsActive,
+            ////    Salary = E.Salary,
+            ////    Email = E.Email,
+            ////    gender = E.Gender,
+            ////    EmployeeType = E.EmployeeType
+            ////});
+
+            //var EmpToReturn = _mapper.Map<IEnumerable<Employee> , IEnumerable<GetEmployeeDTO>>(Emp);
+
+            //return EmpToReturn;
+
+            IEnumerable<Employee> Employees;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Employees = _entity.GetAll();
+            }
+            else
+            {
+                Employees = _entity.GetAll(E => E.Name.ToLower().Contains(name.ToLower()));
+            }
+            var EmpToReturn = _mapper.Map<IEnumerable<Employee>, IEnumerable<GetEmployeeDTO>>(Employees);
             return EmpToReturn;
         }
 

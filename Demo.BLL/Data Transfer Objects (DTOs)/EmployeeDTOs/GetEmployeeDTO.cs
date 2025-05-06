@@ -22,5 +22,8 @@ namespace Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs
         public EmployeeGender gender { get; set; }
         [Display(Name = "Employee Type")]
         public EmployeeType EmployeeType { get; set; }
+
+        [Display(Name = "Department")]
+        public string? Department { get; set; }
     }
 }

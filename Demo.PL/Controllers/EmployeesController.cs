@@ -1,6 +1,9 @@
 ﻿using Demo.BLL.Data_Transfer_Objects__DTOs_.EmployeeDTOs;
+using Demo.BLL.Services.DepartmentServices;
 using Demo.BLL.Services.EmployeeServices;
+using Demo.DAL.Models.EmployeeModel;
 using Demo.DAL.Models.Shared;
+using Demo.PL.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +13,9 @@ namespace Demo.PL.Controllers
     {
         #region Index
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? EmployeeSearchName)
         {
-            var Employees = _employeeServices.GetAllEmployees();
+            var Employees = _employeeServices.GetAllEmployees(EmployeeSearchName);
             return View(Employees);
         }
 
@@ -27,13 +30,27 @@ namespace Demo.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(AddNewEmployeeDTO employeeDTO)
+        public IActionResult Create(EmployeeViewModel employeeDTO)
         {
             if (ModelState.IsValid) // server side validation
             {
                 try
                 {
-                    int result = _employeeServices.AddEmployee(employeeDTO);
+                    var employee = new AddNewEmployeeDTO()
+                    {
+                        Name = employeeDTO.Name,
+                        Salary = employeeDTO.Salary,
+                        Email = employeeDTO.Email,
+                        PhoneNumber = employeeDTO.PhoneNumber,
+                        IsActive = employeeDTO.IsActive,
+                        HiringDate = employeeDTO.HiringDate,
+                        EmployeeType = employeeDTO.EmployeeType,
+                        Age = employeeDTO.Age,
+                        gender = employeeDTO.gender,
+                        DepartmentID = employeeDTO.DepartmentID,
+                        Image = employeeDTO.Image
+                    };
+                    int result = _employeeServices.AddEmployee(employee);
                     if (result > 0)
                         return RedirectToAction(nameof(Index));
                     else
@@ -61,7 +78,7 @@ namespace Demo.PL.Controllers
 
         #region Details
         [HttpGet]
-        public ActionResult Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (!id.HasValue) return BadRequest();
             var employee = _employeeServices.GetEmployeeById(id.Value);
@@ -78,31 +95,46 @@ namespace Demo.PL.Controllers
             var employee = _employeeServices.GetEmployeeById(id.Value);
             if (employee is null) return NotFound();
 
-            var employeeDTO = new UpdatedmployeeDTO();
+            var employeeViewModel = new EmployeeViewModel()
             {
-                employeeDTO.Id = id.Value;
-                employeeDTO.Name = employee.Name;
-                employeeDTO.Address = employee.Address;
-                employeeDTO.Salary = employee.Salary;
-                employeeDTO.Email = employee.Email;
-                employeeDTO.PhoneNumber = employee.PhoneNumber;
-                employeeDTO.IsActive = employee.IsActive;
-                employee.HiringDate = employee.HiringDate;
-                employeeDTO.gender = employee.gender;
-                employeeDTO.EmployeeType = employee.EmployeeType;
-            }
-            return View(employeeDTO);
+                Name = employee.Name,
+                Salary = employee.Salary,
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                IsActive = employee.IsActive,
+                HiringDate = employee.HiringDate,
+                gender = employee.gender,
+                EmployeeType = employee.EmployeeType,
+                DepartmentID = employee.DepartmentID,
+                Age = employee.Age,
+            };
+            return View(employeeViewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute] int? id, UpdatedmployeeDTO updatedmployeeDTO)
+        public IActionResult Edit([FromRoute] int? id, EmployeeViewModel updatedmployeeDTO)
         {
-            if (!id.HasValue || id != updatedmployeeDTO.Id) return BadRequest();
+            if (!id.HasValue) return BadRequest();
             if (!ModelState.IsValid) return View(updatedmployeeDTO);
 
             try
             {
-                var Result = _employeeServices.UpdateEmployee(updatedmployeeDTO);
+                var employee = new UpdatedmployeeDTO()
+                { 
+                    Id = id.Value,
+                    Name = updatedmployeeDTO.Name,
+                    Salary = updatedmployeeDTO.Salary,
+                    Email = updatedmployeeDTO.Email,
+                    PhoneNumber = updatedmployeeDTO.PhoneNumber,
+                    IsActive = updatedmployeeDTO.IsActive,
+                    HiringDate = updatedmployeeDTO.HiringDate,
+                    EmployeeType = updatedmployeeDTO.EmployeeType,
+                    Age = updatedmployeeDTO.Age,
+                    gender = updatedmployeeDTO.gender,
+                    DepartmentID = updatedmployeeDTO.DepartmentID
+                };
+
+                var Result = _employeeServices.UpdateEmployee(employee);
                 if (Result > 0) return RedirectToAction(nameof(Index));
                 else
                 {

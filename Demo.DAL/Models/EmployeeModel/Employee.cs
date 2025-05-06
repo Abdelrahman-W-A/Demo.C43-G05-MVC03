@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Demo.DAL.Models.DepartmentModel;
 using Demo.DAL.Models.Shared;
 
 namespace Demo.DAL.Models.EmployeeModel
@@ -19,5 +21,9 @@ namespace Demo.DAL.Models.EmployeeModel
         public DateTime HiringDate { get; set;}
         public EmployeeGender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+
+        public int? DepartmentID { get; set; }
+        public virtual Department? Department { get; set; }
+        public string? ImageName { get; set; }
     }
 }
